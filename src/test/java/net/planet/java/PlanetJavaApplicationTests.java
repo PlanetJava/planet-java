@@ -1,4 +1,4 @@
-package com.planet.java;
+package net.planet.java;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

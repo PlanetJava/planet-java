@@ -1,4 +1,4 @@
-package com.planet.java;
+package net.planet.java;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
