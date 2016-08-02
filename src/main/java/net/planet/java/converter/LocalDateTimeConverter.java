@@ -24,8 +24,7 @@ public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime,
 
     @Override
     public LocalDateTime convertToEntityAttribute(Date dbData) {
-        Instant instant = Instant.ofEpochMilli(dbData.getTime());
 
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return dbData != null ? LocalDateTime.ofInstant(Instant.ofEpochMilli(dbData.getTime()), ZoneId.systemDefault()) : null;
     }
 }
