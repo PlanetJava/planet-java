@@ -9,4 +9,3 @@
         sudo chmod -R 755 planet-java/
         cd planet-java/ 
         sudo touch planet-java.log
-      
