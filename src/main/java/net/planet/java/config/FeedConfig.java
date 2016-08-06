@@ -6,6 +6,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import net.planet.java.domain.FeedSource;
 import net.planet.java.domain.RssFeed;
 import net.planet.java.feed.FeedMessageSource;
+import net.planet.java.feed.RssFeedMessageSelector;
 import net.planet.java.repository.FeedSourceRepository;
 import net.planet.java.repository.RssFeedRepository;
 import net.planet.java.util.DateUtils;
@@ -22,6 +23,7 @@ import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.support.tuple.Tuple2;
 import org.springframework.integration.scheduling.PollerMetadata;
+import org.springframework.messaging.Message;
 
 import java.util.Date;
 import java.util.List;
@@ -112,6 +114,13 @@ public class FeedConfig {
 		return rssFeed;
 	}
 
+
+	@Bean
+	public RssFeedMessageSelector messageSelector() {
+
+		return new RssFeedMessageSelector();
+	}
+
 	//TODO :: Consideration
 	// 1. We might need to have multiple splitter based on content
 	// 2. Filter for filtering out undesired feeds
@@ -119,12 +128,12 @@ public class FeedConfig {
 	@Bean
 	public IntegrationFlow feedFlow() {
 
-		return IntegrationFlows.from(feedMessageSource(), c -> {
-			c.poller(poller());
-		}).filter(source -> {
-			//TODO:: implement filter
-			return true;
-		}).transform(source -> source) // TODO in case we need to transform
+		return IntegrationFlows
+			.from(feedMessageSource(), c -> {
+				c.poller(poller());
+			}).filter(source -> {
+				return messageSelector().accept((Message<?>) source);
+			}).transform(source -> source) // TODO in case we need to transform
 			.channel(this.consumer())
 			.get();
 	}

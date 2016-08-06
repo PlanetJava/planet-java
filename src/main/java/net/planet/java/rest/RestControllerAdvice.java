@@ -68,7 +68,6 @@ public class RestControllerAdvice {
         return dto;
     }
 
-
     private String resolveLocalizedErrorMessage(FieldError fieldError) {
         Locale currentLocale =  LocaleContextHolder.getLocale();
         String localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale);

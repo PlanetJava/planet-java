@@ -54,7 +54,6 @@ public class FeedSourceController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public HttpHeaders create(@Valid @RequestBody FeedSourceDto feedSourceDto) {
-		//TODO validate the bean first
 		FeedSourceDto feedSourceDtoSaved = feedSourceService.create(feedSourceDto);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
@@ -66,8 +65,6 @@ public class FeedSourceController {
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public HttpHeaders update(@PathVariable("id") Long id, @Valid @RequestBody FeedSourceDto feedSourceDto) {
-		//TODO validate the bean first
-
 		FeedSourceDto updated = feedSourceService.update(id, feedSourceDto);
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(linkTo(FeedSourceController.class).slash(updated.getId()).toUri());
