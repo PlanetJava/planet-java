@@ -13,11 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .antMatchers("/", "home","/webjars/**", "/css/**", "/js/**", "/images/**").permitAll()
-                .anyRequest().authenticated();
-    }
+		http.csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/", "home", "/webjars/**", "/css/**", "/js/**", "/images/**").permitAll()
+			.antMatchers("/api/v1/**").permitAll() //TODO for now, will figure this out  later
+			.anyRequest().authenticated();
+	}
 }
