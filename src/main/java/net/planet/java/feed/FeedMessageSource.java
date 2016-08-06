@@ -5,6 +5,7 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import net.planet.java.domain.FeedSource;
+import net.planet.java.repository.FeedSourceRepository;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -21,6 +22,7 @@ import org.springframework.messaging.Message;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +35,11 @@ import java.util.stream.Collectors;
 public class FeedMessageSource implements MessageSource, InitializingBean {
 	private static final Logger log = LoggerFactory.getLogger(FeedMessageSource.class);
 
-	private List<FeedSource> feedSources;
+	private FeedSourceRepository feedSourceRepository;
+
+	public FeedMessageSource(FeedSourceRepository feedSourceRepository) {
+		this.feedSourceRepository = feedSourceRepository;
+	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -48,12 +54,10 @@ public class FeedMessageSource implements MessageSource, InitializingBean {
 			.build();
 	}
 
-
-
 	private List<Tuple2<FeedSource, SyndFeed>> obtainFeedItems() {
 		try (CloseableHttpClient client = HttpClients.createMinimal()) {
 
-			return feedSources
+			return feedSourceRepository.findAllByDeletedFalseAndExpiredFalse()
 				.stream()
 				.parallel()
 				.map(feedSource -> {
@@ -62,8 +66,10 @@ public class FeedMessageSource implements MessageSource, InitializingBean {
 					try (CloseableHttpResponse response = client.execute(method);
 					     InputStream stream = response.getEntity().getContent()) {
 						SyndFeedInput input = new SyndFeedInput();
-
 						SyndFeed syndFeed = input.build(new XmlReader(stream));
+
+						feedSource.setLastVisit(LocalDateTime.now());
+						feedSourceRepository.save(feedSource);
 
 						return Tuples.of(feedSource, syndFeed);
 					} catch (IOException | FeedException e) {
@@ -76,10 +82,5 @@ public class FeedMessageSource implements MessageSource, InitializingBean {
 		}
 
 		return Collections.emptyList();
-	}
-
-	public FeedMessageSource setFeedSources(List<FeedSource> feedSources) {
-		this.feedSources = feedSources;
-		return this;
 	}
 }

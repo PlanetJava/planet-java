@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.core.Pollers;
@@ -55,10 +56,8 @@ public class FeedConfig {
 
 	@Bean
 	public FeedMessageSource feedMessageSource() {
-		FeedMessageSource feedMessageSource = new FeedMessageSource();
-		feedMessageSource.setFeedSources(feedSourceRepository.findAllByDeletedFalseAndExpiredFalse());
 
-		return feedMessageSource;
+		return new FeedMessageSource(feedSourceRepository);
 	}
 
 	@Bean(name = PollerMetadata.DEFAULT_POLLER)
@@ -131,9 +130,9 @@ public class FeedConfig {
 		return IntegrationFlows
 			.from(feedMessageSource(), c -> {
 				c.poller(poller());
-			}).filter(source -> {
-				return messageSelector().accept((Message<?>) source);
-			}).transform(source -> source) // TODO in case we need to transform
+			})
+			.filter(source -> true) //TODO in case of filter
+			.transform(source -> source) // TODO in case we need to transform
 			.channel(this.consumer())
 			.get();
 	}

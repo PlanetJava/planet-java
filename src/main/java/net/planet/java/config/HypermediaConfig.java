@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableHypermediaSupport(type = {EnableHypermediaSupport.HypermediaType.HAL})
 public class HypermediaConfig  extends WebMvcConfigurerAdapter{
+
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
 
