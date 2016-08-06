@@ -24,7 +24,7 @@ public class RssFeedResourceAssembler extends ResourceAssemblerSupport<RssFeedDt
 
 	@Override
 	protected RssFeedResource instantiateResource(RssFeedDto entity) {
-		return new RssFeedResource(entity);
 
+		return new RssFeedResource(entity);
 	}
 }
