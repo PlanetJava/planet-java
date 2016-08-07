@@ -1,6 +1,9 @@
-sudo: false
 language: java
 jdk:
   - oraclejdk8
 
-script: gradle build --stacktrace --info --no-daemon
+cache:
+  directories:
+    - $HOME/.gradle/
+    - .gradle/
+script: gradle clean build

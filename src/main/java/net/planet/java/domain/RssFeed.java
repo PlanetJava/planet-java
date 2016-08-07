@@ -1,6 +1,7 @@
 package net.planet.java.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class RssFeed extends PersistenceObject {
 	private String type;
 	private String title;
