@@ -8,7 +8,7 @@ import net.planet.java.domain.RssFeedItem;
 import net.planet.java.feed.FeedMessageSource;
 import net.planet.java.feed.RssFeedMessageSelector;
 import net.planet.java.repository.FeedSourceRepository;
-import net.planet.java.repository.RssFeedRepository;
+import net.planet.java.repository.RssFeedItemRepository;
 import net.planet.java.util.DateUtils;
 import net.planet.java.util.StringUtils;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class FeedConfig {
 	private FeedSourceRepository feedSourceRepository;
 
 	@Autowired
-	private RssFeedRepository rssFeedRepository;
+	private RssFeedItemRepository rssFeedItemRepository;
 
 	@Value("${feed.source.poller.cron}")
 	public String feedSourcePollerCron;
@@ -81,7 +81,7 @@ public class FeedConfig {
 				.flatMap(rssFeedStream -> rssFeedStream)
 				.collect(Collectors.toList());
 
-			rssFeedRepository.save(feedList);
+			rssFeedItemRepository.save(feedList);
 		});
 
 		return directChannel;

@@ -1,6 +1,6 @@
 package net.planet.java.service;
 
-import net.planet.java.dto.RssFeedDto;
+import net.planet.java.dto.RssFeedItemDto;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface RssFeedService {
-	PageImpl<RssFeedDto> findAll(Pageable pageable);
+	PageImpl<RssFeedItemDto> findAll(Pageable pageable);
 
-	RssFeedDto findOne(Long id);
+	RssFeedItemDto findOne(Long id);
 }

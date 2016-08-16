@@ -11,7 +11,7 @@ import java.util.Optional;
  * @since 8/6/16.
  */
 @Repository
-public interface RssFeedRepository extends JpaRepository<RssFeedItem, Long> {
+public interface RssFeedItemRepository extends JpaRepository<RssFeedItem, Long> {
 
 	Optional<RssFeedItem> findOneById(Long id);
 }
