@@ -22,7 +22,7 @@ public class IndexController {
 	public ResourceSupport index() {
 		ResourceSupport index = new ResourceSupport();
 		index.add(linkTo(FeedSourceController.class).withRel("feedSources"));
-		index.add(linkTo(RssFeedController.class).withRel("rssFeeds"));
+		index.add(linkTo(RssFeedController.class).withRel("rssFeedItems"));
 
 		return index;
 	}

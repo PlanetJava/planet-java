@@ -1,7 +1,7 @@
 package net.planet.java.service;
 
 import lombok.RequiredArgsConstructor;
-import net.planet.java.domain.RssFeed;
+import net.planet.java.domain.RssFeedItem;
 import net.planet.java.dto.RssFeedDto;
 import net.planet.java.exceptions.ResourceDoesNotExistException;
 import net.planet.java.repository.RssFeedRepository;
@@ -42,8 +42,8 @@ public class RssFeedServiceImpl implements RssFeedService {
 			.orElseThrow(ResourceDoesNotExistException::new);
 	}
 
-	private RssFeedDto convertToDto(RssFeed rssFeed) {
+	private RssFeedDto convertToDto(RssFeedItem rssFeedItem) {
 
-		return modelMapper.map(rssFeed, RssFeedDto.class);
+		return modelMapper.map(rssFeedItem, RssFeedDto.class);
 	}
 }

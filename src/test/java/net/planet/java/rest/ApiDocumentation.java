@@ -120,7 +120,7 @@ public class ApiDocumentation {
 			.andDo(this.documentationHandler.document(
 				links(
 					linkWithRel("feedSources").description("The <<resources-feed-sources,FeedSource resource>>"),
-					linkWithRel("rssFeeds").description("The <<resources-rss-feeds,RssFeed resource>>")),
+					linkWithRel("rssFeedItems").description("The <<resources-rss-feeds,RssFeedItem resource>>")),
 				responseFields(
 					fieldWithPath("_links").description("<<resources-index-links,Links>> to other resources"))
 			));

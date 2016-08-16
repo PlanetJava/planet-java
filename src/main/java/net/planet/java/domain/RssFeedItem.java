@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RssFeed extends PersistenceObject {
+public class RssFeedItem extends PersistenceObject {
 	private String type;
 	private String title;
 	private String link;

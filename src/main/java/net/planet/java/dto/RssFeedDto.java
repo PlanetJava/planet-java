@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @EqualsAndHashCode(of = "id")
-@Relation(value = "rssFeed", collectionRelation = "rssFeeds")
+@Relation(value = "rssFeed", collectionRelation = "rssFeedItems")
 public class RssFeedDto {
 	private Long id;
 	private String type;
