@@ -4,8 +4,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.planet.java.constants.ApiLinks;
 import net.planet.java.dto.FeedSourceDto;
-import net.planet.java.dto.RssFeedDto;
-import net.planet.java.resource.FeedSourceResource;
+import net.planet.java.dto.RssFeedItemDto;
 import net.planet.java.resource.RssFeedResource;
 import net.planet.java.resource.RssFeedResourceAssembler;
 import net.planet.java.service.RssFeedService;
@@ -40,8 +39,8 @@ public class RssFeedController {
 	private final RssFeedResourceAssembler rssFeedResourceAssembler;
 
 	@GetMapping
-	public PagedResources<RssFeedResource> findAll(Pageable pageable, PagedResourcesAssembler<RssFeedDto> pagedResourcesAssembler) {
-		PageImpl<RssFeedDto> page = rssFeedService.findAll(pageable);
+	public PagedResources<RssFeedResource> findAll(Pageable pageable, PagedResourcesAssembler<RssFeedItemDto> pagedResourcesAssembler) {
+		PageImpl<RssFeedItemDto> page = rssFeedService.findAll(pageable);
 
 		return pagedResourcesAssembler.toResource(page, rssFeedResourceAssembler);
 	}

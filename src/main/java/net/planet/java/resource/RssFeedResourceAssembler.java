@@ -1,6 +1,6 @@
 package net.planet.java.resource;
 
-import net.planet.java.dto.RssFeedDto;
+import net.planet.java.dto.RssFeedItemDto;
 import net.planet.java.rest.RssFeedController;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
  * @since 8/6/16.
  */
 @Component
-public class RssFeedResourceAssembler extends ResourceAssemblerSupport<RssFeedDto, RssFeedResource> {
+public class RssFeedResourceAssembler extends ResourceAssemblerSupport<RssFeedItemDto, RssFeedResource> {
 
 	public RssFeedResourceAssembler() {
 		super(RssFeedController.class, RssFeedResource.class);
 	}
 
 	@Override
-	public RssFeedResource toResource(RssFeedDto rssFeedDto) {
+	public RssFeedResource toResource(RssFeedItemDto rssFeedItemDto) {
 
-		return createResourceWithId(rssFeedDto.getId(), rssFeedDto);
+		return createResourceWithId(rssFeedItemDto.getId(), rssFeedItemDto);
 	}
 
 	@Override
-	protected RssFeedResource instantiateResource(RssFeedDto entity) {
+	protected RssFeedResource instantiateResource(RssFeedItemDto entity) {
 
 		return new RssFeedResource(entity);
 	}

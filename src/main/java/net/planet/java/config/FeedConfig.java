@@ -4,11 +4,11 @@ import com.rometools.rome.feed.synd.SyndCategory;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import net.planet.java.domain.FeedSource;
-import net.planet.java.domain.RssFeed;
+import net.planet.java.domain.RssFeedItem;
 import net.planet.java.feed.FeedMessageSource;
 import net.planet.java.feed.RssFeedMessageSelector;
 import net.planet.java.repository.FeedSourceRepository;
-import net.planet.java.repository.RssFeedRepository;
+import net.planet.java.repository.RssFeedItemRepository;
 import net.planet.java.util.DateUtils;
 import net.planet.java.util.StringUtils;
 import org.slf4j.Logger;
@@ -18,13 +18,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.dsl.support.tuple.Tuple2;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.Message;
 
 import java.util.Date;
 import java.util.List;
@@ -49,7 +47,7 @@ public class FeedConfig {
 	private FeedSourceRepository feedSourceRepository;
 
 	@Autowired
-	private RssFeedRepository rssFeedRepository;
+	private RssFeedItemRepository rssFeedItemRepository;
 
 	@Value("${feed.source.poller.cron}")
 	public String feedSourcePollerCron;
@@ -75,7 +73,7 @@ public class FeedConfig {
 		directChannel.subscribe(message -> {
 			List<Tuple2<FeedSource, SyndFeed>> feeds = (List<Tuple2<FeedSource, SyndFeed>>) message.getPayload();
 
-			List<RssFeed> feedList = feeds.stream()
+			List<RssFeedItem> feedList = feeds.stream()
 				.map(feedTuple2 -> feedTuple2.getT2()
 					.getEntries()
 					.stream()
@@ -83,15 +81,15 @@ public class FeedConfig {
 				.flatMap(rssFeedStream -> rssFeedStream)
 				.collect(Collectors.toList());
 
-			rssFeedRepository.save(feedList);
+			rssFeedItemRepository.save(feedList);
 		});
 
 		return directChannel;
 	}
 
 	//TODO move it to transformer
-	private RssFeed convertTo(final FeedSource feedSource, final String feedType, final SyndEntry entry) {
-		RssFeed rssFeed = new RssFeed();
+	private RssFeedItem convertTo(final FeedSource feedSource, final String feedType, final SyndEntry entry) {
+		RssFeedItem rssFeedItem = new RssFeedItem();
 
 		String author = entry.getAuthor();
 		String description = entry.getDescription().getValue();
@@ -100,17 +98,17 @@ public class FeedConfig {
 		String categories = entry.getCategories().stream().map(SyndCategory::getName).collect(Collectors.joining(","));//TODO figure out later
 		String title = entry.getTitle();
 
-		rssFeed.setAuthor(author);
-		rssFeed.setCategory(categories);
-		rssFeed.setDescription(StringUtils.trim(description));
-		rssFeed.setFeedSource(feedSource);
-		rssFeed.setLink(link);
-		rssFeed.setPublishedDate(DateUtils.convertTo(publishedDate));
-		rssFeed.setTitle(StringUtils.trim(title));
-		rssFeed.setType(feedType);
-		rssFeed.setGuid(UUID.randomUUID().toString());
+		rssFeedItem.setAuthor(author);
+		rssFeedItem.setCategory(categories);
+		rssFeedItem.setDescription(StringUtils.trim(description));
+		rssFeedItem.setFeedSource(feedSource);
+		rssFeedItem.setLink(link);
+		rssFeedItem.setPublishedDate(DateUtils.convertTo(publishedDate));
+		rssFeedItem.setTitle(StringUtils.trim(title));
+		rssFeedItem.setType(feedType);
+		rssFeedItem.setGuid(UUID.randomUUID().toString());
 
-		return rssFeed;
+		return rssFeedItem;
 	}
 
 

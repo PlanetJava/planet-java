@@ -35,6 +35,6 @@ public class FeedSource extends PersistenceObject {
 	private LocalDateTime lastVisit;
 
 	@OneToMany(mappedBy = "feedSource", fetch = FetchType.LAZY)
-	private List<RssFeed> rssFeeds = new ArrayList<>();
+	private List<RssFeedItem> rssFeedItems = new ArrayList<>();
 
 }

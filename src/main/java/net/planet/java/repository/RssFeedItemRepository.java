@@ -1,6 +1,6 @@
 package net.planet.java.repository;
 
-import net.planet.java.domain.RssFeed;
+import net.planet.java.domain.RssFeedItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.Optional;
  * @since 8/6/16.
  */
 @Repository
-public interface RssFeedRepository extends JpaRepository<RssFeed, Long> {
+public interface RssFeedItemRepository extends JpaRepository<RssFeedItem, Long> {
 
-	Optional<RssFeed> findOneById(Long id);
+	Optional<RssFeedItem> findOneById(Long id);
 }
