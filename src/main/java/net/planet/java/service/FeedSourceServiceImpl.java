@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -44,9 +45,15 @@ public class FeedSourceServiceImpl implements FeedSourceService {
     @Override
     public FeedSourceDto create(FeedSourceDto feedSourceDto) {
         FeedSource feedSource = convertToEntity(feedSourceDto);
-        FeedSource savedFeedSource = feedSourceRepository.save(feedSource);
 
-        return convertToDto(savedFeedSource);
+        Optional<FeedSource> existingFeedSource = feedSourceRepository.findOneByUrl(feedSource.getUrl());
+
+        if (!existingFeedSource.isPresent()) {
+            FeedSource savedFeedSource = feedSourceRepository.save(feedSource);
+            return convertToDto(savedFeedSource);
+        } else {
+            return convertToDto(existingFeedSource.get());
+        }
     }
 
     @Override

@@ -17,4 +17,6 @@ public interface FeedSourceRepository extends JpaRepository<FeedSource, Long> {
     List<FeedSource> findAllByDeletedFalseAndExpiredFalse();
 
     Optional<FeedSource> findOneById(Long id);
+
+    Optional<FeedSource> findOneByUrl(String url);
 }

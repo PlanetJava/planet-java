@@ -53,13 +53,16 @@ public class FeedSourceController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public HttpHeaders create(@Valid @RequestBody FeedSourceDto feedSourceDto) {
+	public FeedSourceResource create(@Valid @RequestBody FeedSourceDto feedSourceDto) {
 		FeedSourceDto feedSourceDtoSaved = feedSourceService.create(feedSourceDto);
 
+        return feedSourceResourceAssembler.toResource(feedSourceDto);
+
+		/*
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setLocation(linkTo(FeedSourceController.class).slash(feedSourceDtoSaved.getId()).toUri());
 
-		return httpHeaders;
+		return httpHeaders; */
 	}
 
 	@PutMapping("/{id}")
