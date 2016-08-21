@@ -6,6 +6,7 @@ import net.planet.java.constants.ApiLinks;
 import net.planet.java.domain.FeedSource;
 import net.planet.java.dto.FeedSourceDto;
 import net.planet.java.repository.FeedSourceRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,6 +81,11 @@ public class ApiDocumentation {
 			.apply(documentationConfiguration(this.restDocumentation))
 			.alwaysDo(this.documentationHandler)
 			.build();
+	}
+
+	@After
+	public void after(){
+		this.feedSourceRepository.deleteAll();
 	}
 
 	@Test
@@ -244,6 +250,7 @@ public class ApiDocumentation {
 			.andExpect(status().isCreated())
 			.andReturn().getResponse().getHeader("Location");
 
+		System.err.println(" feedSourceLocation" + feedSourceLocation);
 		this.mockMvc
 			.perform(get(feedSourceLocation))
 			.andExpect(status().isOk())
